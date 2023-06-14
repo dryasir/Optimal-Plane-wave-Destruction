@@ -1,0 +1,7 @@
+2.0	sfsegyread	book/yasir/book-model:	Yasir@localhost.localdomain	Wed Nov 20 11:20:17 2019
+
+	n2=5001
+	data_format="native_int"
+	esize=4
+	in="/var/tmp/book/yasir/book-model/tfile.rsf@"
+	n1=91

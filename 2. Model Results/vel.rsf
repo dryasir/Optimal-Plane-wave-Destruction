@@ -1,0 +1,45 @@
+2.0	sfsegyread	book/yasir/book-model:	Yasir@localhost.localdomain	Wed Nov 20 11:20:17 2019
+
+	d2=1
+	o1=0
+	n2=5001
+	o2=0
+	label1="Time"
+	data_format="native_float"
+	head="tfile.rsf"
+	label2="Trace"
+	esize=4
+	in="/var/tmp/book/yasir/book-model/velocity.rsf@"
+	unit1="s"
+	d1=0.001
+	n1=3001
+2.0	sfwindow	book/yasir/book-model:	Yasir@localhost.localdomain	Wed Nov 20 11:20:18 2019
+
+	d2=1
+	n2=5001
+	o1=0
+	o2=0
+	label1="Time"
+	data_format="native_float"
+	label2="Trace"
+	esize=4
+	in="stdout"
+	unit1="s"
+	d1=0.001
+	n1=3001
+	in="stdin"
+
+2.0	sfput	book/yasir/book-model:	Yasir@localhost.localdomain	Wed Nov 20 11:20:18 2019
+
+	data_format="native_float"
+	label1=Depth
+	label2=Distance
+	o1=0
+	d1=1
+	o2=0
+	d2=1
+	n1=3001
+	n2=5001
+	unit1=m
+	unit2=m
+	in="/var/tmp/book/yasir/book-model/vel.rsf@"

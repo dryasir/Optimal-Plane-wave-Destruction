@@ -1,0 +1,120 @@
+import os
+os.environ['SFPENOPTS'] = 'bgcolor=w'
+from rsf.proj import *
+
+# Conversion of Model
+Flow(['velocity','tfile','hfile','bfile'],'Velocity5.sgy','''segyread tfile=${TARGETS[1]} hfile=${TARGETS[2]} bfile=${TARGETS[3]}''')
+
+Flow ('vel','velocity',
+'''
+window | put n1=3001 d1=1 o1=0 n2=5001 d2=1 o2=0 label1="Depth" unit1="m" label2="Distance" unit2="m"
+''')
+
+Result('vel',
+       '''
+       grey color=j allpos=y bias=1.5
+       scalebar=y barreverse=y wanttitle=n
+       ''')
+"""
+# Exploding Reflector Modeling
+
+dx=0.001
+x0=0.001
+
+Flow ('lside','vel','window n2=1  | spray axis=2 n=40')
+Flow ('rside','vel','window n2=1 f2=-1 | spray axis=2 n=40')
+Flow ('extend','lside vel rside','cat ${SOURCES[1]} ${SOURCES[2]} axis=2')
+
+dt=0.001
+nt=6002
+
+Flow('refl','extend',
+     '''
+     depth2time velocity=$SOURCE nt=%d dt=%g|
+     ai2refl |
+     ricker1 frequency=50 |
+     time2depth velocity=$SOURCE
+     ''' % (nt,dt))
+
+Result('refl','grey color=e title="Reflectivity Series" ')
+
+#############################################
+## Modelling
+
+Flow('fft','refl','transp | fft1 | fft3 axis=2 pad=1')
+
+Flow('right left','extend fft',
+     '''
+     transp | scale dscale=0.5 |
+     isolr2 seed=2012 dt=%g fft=${SOURCES[1]} left=${TARGETS[1]} 
+     ''' % dt) # Lowrank decomposition for 2-D wave propagation. 
+
+Flow('exp','refl left right',
+     '''
+     fftexp0
+     trm=y left=${SOURCES[1]} right=${SOURCES[2]} 
+     nt=%d dt=%g
+     ''' % (nt,dt))
+
+#Flow('modexp0','exp','transp | window f2=11 n2=5001 | costaper nw2=100') #n2=vel's n2   
+#Result('modexp0','grey color=e title="Zero-Offset Data" ')
+
+Flow('modexp02','exp','transp')
+Result('modexp02','grey color=e title="Zero-Offset Data" ')
+
+
+
+
+Flow('data','modexp02',
+     '''
+     bandpass flo=60 | window j1=2
+     ''')
+
+Result('data','grey color=e title="Zero-Offset Data after filter" ')
+
+
+######## Lowrank decomposition For Migration
+
+Flow('ffts','vel','transp | fft1| fft3 axis=2 pad=1')   
+Flow('rights lefts','vel ffts',
+     '''
+     transp | scale dscale=0.5 |
+     isolr2 seed=2012 dt=0.001 fft=${SOURCES[1]} left=${TARGETS[1]}
+     ''')
+
+# High-resolution zero-offset migration
+
+# nz and dz = actual size of velocity model
+# Lefts n1= actual model n1*n2  e.g same_sig
+
+Flow('zomigs','modexp0 lefts rights',
+     '''
+     reverse which=1 |
+     transp |
+     fftexp0 mig=y
+     left=${SOURCES[1]} right=${SOURCES[2]}
+     nz=3001 dz=2 | put unit2=km
+     ''')
+
+Result('zomigs',
+       '''
+       grey color=e title="Zero-Offset Migration"
+       ''')
+########################################3
+
+Flow('zomigs2','modexp0 left right',
+     '''
+     reverse which=1 |
+     transp |
+     fftexp0 mig=y
+     left=${SOURCES[1]} right=${SOURCES[2]}
+     nz=3001 dz=2 | put unit2=km
+     ''')
+
+Result('zomigs2',
+       '''
+       grey color=e title="Zero-Offset Migration"
+       ''')
+"""
+
+End()
