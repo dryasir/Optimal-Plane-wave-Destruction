@@ -1,0 +1,16 @@
+import os
+os.environ['SFPENOPTS'] = 'bgcolor=w'
+from rsf.proj import *
+
+# Conversion of data
+Flow(['wr331','tfile','hfile','bfile'],'WR331-stack.sgy','''segyread tfile=${TARGETS[1]} hfile=${TARGETS[2]} bfile=${TARGETS[3]}''')
+
+
+Result('wr331',
+       '''
+       grey title="Stack Data" 
+       ''')
+
+
+
+End()

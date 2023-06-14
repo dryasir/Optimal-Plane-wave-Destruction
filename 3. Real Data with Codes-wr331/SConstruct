@@ -1,0 +1,28 @@
+import os
+os.environ['SFPENOPTS'] = 'bgcolor=w'
+from rsf.proj import *
+
+# Conversion of data
+Flow(['wr331','tfile','hfile','bfile'],'WR331-stack.sgy','''segyread tfile=${TARGETS[1]} hfile=${TARGETS[2]} bfile=${TARGETS[3]}''')
+
+
+Result('wr331',
+       '''
+       grey title="Stack Data" 
+       ''')
+
+#DIP-1
+Flow('dip','wr331','dip rect1=300 rect2=100 order=5')
+Result('dip','grey color=i scalebar=y title=Slope 1')
+Flow('pwd','wr331 dip','pwd dip=${SOURCES[1]} order=5')
+Result('pwd','grey color=e title="Separated Diffractions1" ')
+
+#DIP-2 rect2 is the key for diffraction
+Flow('dip2','wr331','dip rect1=10 rect2=2000 order=1')
+Result('dip2','grey color=i scalebar=y title=Slope 2')
+Flow('pwd2','wr331 dip2','pwd dip=${SOURCES[1]} order=1')
+Result('pwd2','grey color=e title="Separated Diffractions 2" ')
+
+
+
+End()
