@@ -1,0 +1,17 @@
+2.0	sfspike	yasir/10. onestep/fowler:	Yasir@localhost.localdomain	Thu Apr  7 09:46:37 2022
+
+	o1=0
+	label1="Time"
+	data_format="native_float"
+	esize=4
+	in="stdout"
+	unit1="s"
+	d1=0.03
+	n1=41
+	in="stdin"
+
+2.0	sfricker1	yasir/10. onestep/fowler:	Yasir@localhost.localdomain	Thu Apr  7 09:46:37 2022
+
+	data_format="native_float"
+	esize=4
+	in="/var/tmp/yasir/10. onestep/fowler/source-30.rsf@"

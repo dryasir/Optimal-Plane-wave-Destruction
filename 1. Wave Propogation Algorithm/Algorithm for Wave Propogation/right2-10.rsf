@@ -1,0 +1,35 @@
+2.0	sfspike	yasir/10. onestep/fowler:	Yasir@localhost.localdomain	Thu Apr  7 09:37:38 2022
+
+	d2=15
+	o1=0
+	n2=601
+	o2=0
+	label1="Time"
+	data_format="native_float"
+	label2="Distance"
+	esize=4
+	in="/var/tmp/yasir/10. onestep/fowler/top.rsf@"
+	unit1="s"
+	unit2="km"
+	d1=15
+	n1=250
+2.0	sfcat	yasir/10. onestep/fowler:	Yasir@localhost.localdomain	Thu Apr  7 09:37:38 2022
+
+	data_format="native_float"
+	esize=4
+	in="stdout"
+	n1=400
+	in="stdin"
+
+2.0	sfsmooth	yasir/10. onestep/fowler:	Yasir@localhost.localdomain	Thu Apr  7 09:37:38 2022
+
+	data_format="native_float"
+	esize=4
+	in="/var/tmp/yasir/10. onestep/fowler/vel.rsf@"
+2.0	sfisolr2	yasir/10. onestep/fowler:	Yasir@localhost.localdomain	Thu Apr  7 09:44:27 2022
+
+	n2=125625
+	data_format="native_float"
+	esize=4
+	in="/var/tmp/yasir/10. onestep/fowler/right2-10.rsf@"
+	n1=6
